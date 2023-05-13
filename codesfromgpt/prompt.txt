@@ -1,0 +1,72 @@
+you are going to build a webapp in react/typescript
+
+- the app will be a lunch picker app for your company. users will use the app to decide which food to eat for luch
+- for each food category (for example : curry, sushi, ramen etc.) there will be 1 or 2 restaurants near the company. the restaurant details (the name, location,
+photo, main dish, price range) will be provided in json 
+- when the user enters the app, he can click two buttons
+top button will be labeled "eat alone"
+buttom button will be labeled eat together
+
+- if he clicks eat alone, there will be a list of all food categories to pick. It will be blocks with rounded corners
+(based on a typical mobile view, two blocks per line seems appropriate)
+- there will be a y icon and x icon for each block, and users can check either icons or not click any icon at all
+- y and x icon cannot be checked simultaneously.
+
+I will continue my prompt so wait
+ChatGPT
+Sure, I'm waiting for the continuation of your prompt to provide more detailed guidance on building this React/TypeScript web app.
+
+
+
+
+
+
+
+User
+- there is no limit to how many blocks that can be checked
+- after the user checks multiple blocks, there will be a button at fixed viewpoint in the bottom of the screen with the label "pick me food"
+- when this button is clicked, the user navigates to a loader screen
+- after 3 seconds, the user is navigated to a scrollable screen that shows the categories in cards with the relavant restaurants 
+- each category card may have 1 or 2 restaruant details inside
+- for each restaurant, there will be a upvote and downvote icon that users can click
+- also for each restaurant, there will be the net upvote count at the right of the name
+- we will use firebase to track all upvotes and downvotes for each restaurant
+- the order of the category will be determined based on what the user has previously checked, and the netupvotes of the restaurants or category
+- when the user click eat together, a modal will appear with the text "name your group"
+- users will  input the below 
+ a) the name of the group created
+ b) nickname of onesself
+ c) total number of people
+ and then click the next button at the bottom of the modal
+- at the moment the user clicked next, a unique id based on the combination of the timestamp, count and text will be created
+- also a specific subpage will be created (this can be one object in "group" collection)
+- the user will go through the checking category process same as above, but he must check at least 6 (proceeding to next will be invalid if not)
+- after he checks all and clicks next, a screen with the text "your appetite is reflected, please share the below link to your friends"
+ - also in the below will be a comment that {nickname1} has completed, waiting for 2 entries
+- he can then share the link to two friends (if the number of people that he entered was three)
+- each friend can go through the same process, and the same screen will appear with updated content
+
+with the genereated url, when someone enters, they first need to write their nickname inorder to proceed. This mechanism is needed
+so that the same person can comeback if he remembers his own nickname
+ChatGPT
+This is a comprehensive design for a lunch picker app! Here's how you could start building this with React and TypeScript, using Firebase for the backend:
+
+Setup: Begin by setting up a new project with create-react-app, specifying the --template typescript flag to use TypeScript. Install dependencies like react-router-dom for navigation, axios for API calls, @emotion/react for styled components, and firebase for backend.
+
+Structure: Create a components directory where you'll store all the components of your app. You might have components like Home.tsx, FoodCategories.tsx, RestaurantCard.tsx, GroupModal.tsx, Loader.tsx, etc.
+
+Routing: Use react-router-dom to manage your app's routing. Routes might include / for the home page, /categories for the food category selection, /group/:groupId for group decisions, etc.
+
+Home Page: This is where users choose "eat alone" or "eat together". Both buttons can lead to the Food Category selection page, but for "eat together", it triggers the GroupModal component first.
+
+GroupModal Component: This is where users name their group, their nickname, and specify the total number of people in the group. When they click "next", it triggers a function to create a unique ID and a new document in the Firebase 'groups' collection.
+
+FoodCategories Component: Here, users select their food preferences. The y and x icons can be represented by checkbox components with controlled inputs. After selection, users can click a button to navigate to the Loader component before moving to the Results page.
+
+Results Page: This is a scrollable page that shows categories in cards with relevant restaurants. Here, you fetch the restaurant data from Firebase and sort it based on user preferences and upvotes. Each restaurant should have upvote and downvote buttons that update the restaurant's upvote count in Firebase in real-time.
+
+Firebase Setup: Initialize Firebase in your app and set up Firestore for storing data. You'll need collections for 'groups', 'restaurants', and 'votes'.
+
+Sharing Mechanism: When a user completes their preferences, generate a URL with the unique group ID. This can be copied and shared with friends to complete their preferences. You can have a middleware function that checks if the user's nickname is already present in the group before they can proceed.
+
+This is a rough sketch of your app's architecture.
